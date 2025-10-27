@@ -1,3 +1,5 @@
+'use client'
+
 import { Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Header from '@/components/Header'
