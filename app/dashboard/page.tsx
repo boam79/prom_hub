@@ -29,14 +29,15 @@ async function getDashboardData() {
     .eq('seller_id', user.id)
     .order('created_at', { ascending: false })
 
-  // 총 판매액 계산
-  const { data: totalSales } = await supabase
+  // 총 판매액 계산 - 내 프롬프트에 대한 구매만 필터링
+  const { data: allPurchases } = await supabase
     .from('purchases')
-    .select('amount')
+    .select('prompt_id, amount')
     .eq('status', 'completed')
 
-  const salesToMyPrompts = totalSales?.filter(sale => 
-    purchases?.some(p => p.prompt_id === sale.id)
+  const myPromptIds = myPrompts?.map(p => p.id) || []
+  const salesToMyPrompts = allPurchases?.filter(purchase => 
+    myPromptIds.includes(purchase.prompt_id)
   ) || []
 
   const totalSalesAmount = salesToMyPrompts.reduce((sum, sale) => sum + (sale.amount || 0), 0)
