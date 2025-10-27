@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-noto-sans-kr);
+  --font-mono: 'Noto Sans KR', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-noto-sans-kr), 'Noto Sans KR', sans-serif;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
+}
+
+/* Input fields 한글 가독성 개선 */
+input, textarea {
+  color: #111827 !important;
+  font-family: var(--font-noto-sans-kr), 'Noto Sans KR', sans-serif;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #6b7280;
+  opacity: 1;
+  font-family: var(--font-noto-sans-kr), 'Noto Sans KR', sans-serif;
+}
+
+input:focus, textarea:focus {
+  color: #111827;
+  outline: none;
+}
+
+/* 추가 가독성 개선 */
+input[type="text"],
+input[type="email"], 
+input[type="password"],
+input[type="number"],
+textarea {
+  color: #1f2937 !important;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+}
