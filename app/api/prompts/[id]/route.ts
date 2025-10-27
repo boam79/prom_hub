@@ -13,14 +13,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   return NextResponse.json(data)
 }
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const body = await request.json()
-  const { data: prompt, error: promptError } = await supabase.from('prompts').select('seller_id').eq('id', params.id).single()
+  const { data: prompt, error: promptError } = await supabase.from('prompts').select('seller_id').eq('id', id).single()
   if (promptError || prompt?.seller_id !== user.id) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  const { data, error } = await supabase.from('prompts').update(body).eq('id', params.id).select().single()
+  const { data, error } = await supabase.from('prompts').update(body).eq('id', id).select().single()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json(data)
 }
